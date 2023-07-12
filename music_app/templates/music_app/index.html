@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" rel="stylesheet"/>
+    <link rel="icon" href="data:,">
+    <link href="{% static 'style.css' %}" rel="stylesheet"/>
+</head>
+<body>
+    <div class="contain">
+        <div class="container">
+            <div class="music-player">
+                {% for item in page_obj %}
+                    <div class="cover">
+                        <img alt="" style='border-radius: 8px; box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.5), 0 0 10px 5px rgba(0, 255, 255, 0.692);' src="{{item.image.url}}"/>
+                    </div>
+                    <div class="titre">
+                        <h3>
+                            {{item.artist}}
+                        </h3>
+                        <h2>
+                            {{item.title}}
+                        </h2>
+                    </div>
+                    <center>
+                        <a style='padding-right: 140px;' href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }} {% else %} ?page={{ last_page }}{% endif %}">
+                            <i class="fa fa-step-backward fa-2x"></i>
+                        </a> 
+                        <div class="lecteur">
+                            <audio class="fc-media" style="width: 100%;">
+                            <source src="{% if item.audio_file %}{{item.audio_file.url}} {% else %} {{item.audio_link}} {% endif %}" type="audio/mp3"/>
+                            </audio>
+                        </div>
+                        <a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}  {% else %} ?page={{ first_page }} {% endif %}">
+                            <i class="fa fa-step-forward fa-2x"></i>
+                        </a>
+                    </center>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Java script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js"></script>
+    <script src="{% static 'script.js' %}"></script>
+
+</body>
+</html>
